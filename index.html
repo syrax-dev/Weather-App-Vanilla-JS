@@ -11,40 +11,12 @@
       href="https://fonts.googleapis.com/css2?family=Chonburi&family=Young+Serif&display=swap"
       rel="stylesheet"
     />
-    <style>
-      html,
-      body {
-        font-family: system-ui, -apple-system, sans-serif;
-        overflow: hidden;
-        height: 100vh;
-        width: 100vw;
-        margin: 0;
-        padding: 0;
-      }
-      .font-YoungSerif {
-        font-family: "Young Serif", serif;
-      }
-      .scroll-container {
-        overflow-y: auto;
-        overflow-x: hidden;
-        max-height: calc(100vh - 180px);
-      }
-      .scroll-container::-webkit-scrollbar {
-        width: 6px;
-      }
-      .scroll-container::-webkit-scrollbar-track {
-        background: transparent;
-      }
-      .scroll-container::-webkit-scrollbar-thumb {
-        background: rgba(255, 255, 255, 0.3);
-        border-radius: 10px;
-      }
-    </style>
+    <link rel="stylesheet" href="styles.css" />
   </head>
+
   <body
     class="bg-black text-white flex flex-col justify-start items-center h-screen w-screen px-4 py-4"
   >
-    <!-- Weather App Header -->
     <header class="flex justify-center items-center mb-3">
       <h1
         class="font-extrabold font-YoungSerif text-xl sm:text-2xl md:text-3xl"
@@ -52,17 +24,19 @@
         Weather App
       </h1>
     </header>
-
-    <!-- City Input & Search Btn -->
+    <!-- Search input and button -->
     <div
       class="flex flex-col sm:flex-row justify-center items-center gap-2 w-full max-w-md mb-3"
     >
+      <!-- City input field -->
       <input
         id="city-input"
         type="text"
         class="outline-0 rounded-xl h-9 w-full sm:flex-1 border-2 border-[#7942d6] px-4 text-sm bg-black text-white placeholder-gray-400"
         placeholder="Search for City..."
       />
+
+      <!-- Search button -->
       <button
         id="searchBtn"
         class="bg-[#7942d6] rounded-xl h-9 w-full sm:w-24 font-medium hover:bg-[#552f97] transition-colors duration-200 text-sm"
@@ -70,18 +44,17 @@
         Search
       </button>
     </div>
-
-    <!-- Scrollable Content Container -->
     <div class="scroll-container w-full flex flex-col items-center">
-      <!-- Main Weather Display -->
+      <!--  MAIN WEATHER DISPLAY  -->
       <main
         class="flex justify-center items-center w-full max-w-[95%] sm:max-w-md md:max-w-lg rounded-3xl bg-[#7942d6] p-4 mb-3 relative"
       >
-        <!-- Pre-Search State -->
+        <!-- Pre-Search State - Shown before user searches for a city -->
         <div
           id="pre-search"
           class="absolute inset-0 flex flex-col items-center justify-center gap-4 bg-[#7942d6] rounded-3xl"
         >
+          <!-- Search icon SVG -->
           <svg
             class="w-20 h-20 sm:w-24 sm:h-24"
             viewBox="0 0 24 24"
@@ -108,41 +81,43 @@
           </p>
         </div>
 
+        <!-- Weather Information Section - Hidden until search is performed -->
         <section class="w-full">
-          <!-- Weather & City & Temp Display -->
+          <!-- Primary Weather Info  -->
           <div class="flex flex-col space-y-3">
-            <!-- City -->
+            <!-- City Name -->
             <div id="city-name" class="flex justify-center items-center">
               <h2 class="font-bold text-2xl sm:text-3xl text-center">
                 Hyderabad
               </h2>
             </div>
 
-            <!-- Temperature -->
+            <!-- Temperature and Weather Condition -->
             <div
               id="temp"
               class="flex flex-col justify-center items-center space-y-1"
             >
-              <h3 class="font-bold text-5xl sm:text-6xl" id="temp-info">
-                25°C
-              </h3>
-              <h4 class="text-lg sm:text-xl font-medium" id="weather-condition">
-                Sunny
-              </h4>
+              <!-- Current Temperature -->
+              <h3 class="font-bold text-5xl sm:text-6xl" id="temp-info"></h3>
+              <!-- Weather Description (e.g., Sunny, Cloudy) -->
+              <h4
+                class="text-lg sm:text-xl font-medium"
+                id="weather-condition"
+              ></h4>
             </div>
 
-            <!-- Date and Time -->
+            <!-- Current Date Display -->
             <div class="flex justify-center items-center">
               <p class="text-sm opacity-90" id="current-date"></p>
             </div>
           </div>
 
-          <!-- Additional Weather Info - Grid Cards -->
+          <!-- Additional Weather Details Grid -->
           <div
             id="additional-info"
             class="grid grid-cols-2 gap-2 bg-purple-900/40 rounded-xl w-full p-3 mt-4"
           >
-            <!-- Feels Like -->
+            <!-- Feels Like Temperature Card -->
             <div
               class="bg-purple-200 rounded-lg p-3 flex flex-col justify-between h-20"
             >
@@ -164,12 +139,10 @@
                   >Feels Like</span
                 >
               </div>
-              <p class="text-2xl font-bold text-[#7942d6]" id="temp-feels">
-                27°C
-              </p>
+              <p class="text-2xl font-bold text-[#7942d6]" id="temp-feels"></p>
             </div>
 
-            <!-- Wind Speed -->
+            <!-- Wind Speed Card -->
             <div
               class="bg-purple-200 rounded-lg p-3 flex flex-col justify-between h-20"
             >
@@ -189,10 +162,10 @@
                 </svg>
                 <span class="text-xs font-semibold text-[#7942d6]">Wind</span>
               </div>
-              <p class="text-2xl font-bold text-[#7942d6]" id="wind">12 km/h</p>
+              <p class="text-2xl font-bold text-[#7942d6]" id="wind"></p>
             </div>
 
-            <!-- Humidity -->
+            <!-- Humidity Card -->
             <div
               class="bg-purple-200 rounded-lg p-3 flex flex-col justify-between h-20"
             >
@@ -214,10 +187,10 @@
                   >Humidity</span
                 >
               </div>
-              <p class="text-2xl font-bold text-[#7942d6]" id="humidity">65%</p>
+              <p class="text-2xl font-bold text-[#7942d6]" id="humidity"></p>
             </div>
 
-            <!-- Pressure -->
+            <!-- Atmospheric Pressure Card -->
             <div
               class="bg-purple-200 rounded-lg p-3 flex flex-col justify-between h-20"
             >
@@ -236,12 +209,10 @@
                   >Pressure</span
                 >
               </div>
-              <p class="text-2xl font-bold text-[#7942d6]" id="pressure">
-                1013 hPa
-              </p>
+              <p class="text-2xl font-bold text-[#7942d6]" id="pressure"></p>
             </div>
 
-            <!-- Visibility -->
+            <!-- Visibility Distance Card -->
             <div
               class="bg-purple-200 rounded-lg p-3 flex flex-col justify-between h-20"
             >
@@ -268,12 +239,10 @@
                   >Visibility</span
                 >
               </div>
-              <p class="text-2xl font-bold text-[#7942d6]" id="visibility">
-                10 km
-              </p>
+              <p class="text-2xl font-bold text-[#7942d6]" id="visibility"></p>
             </div>
 
-            <!-- Sunrise -->
+            <!-- Sunrise Time Card -->
             <div
               class="bg-purple-200 rounded-lg p-3 flex flex-col justify-between h-20"
             >
@@ -296,20 +265,21 @@
                   >Sunrise</span
                 >
               </div>
-              <p class="text-xl font-bold text-[#7942d6]" id="sunrise">
-                6:30 AM
-              </p>
+              <p class="text-xl font-bold text-[#7942d6]" id="sunrise"></p>
             </div>
           </div>
         </section>
       </main>
 
-      <!-- 4-Day Forecast Section -->
+      <!--  4-DAY FORECAST SECTION  -->
+      <!-- Hidden by default, shown after search is performed -->
       <section
         id="forecast-section"
         class="w-full max-w-[95%] sm:max-w-md md:max-w-lg mb-4 hidden"
       >
         <h3 class="text-xl font-bold mb-3 text-center">4-Day Forecast</h3>
+
+        <!-- Forecast cards container - Populated dynamically by JavaScript -->
         <div
           id="forecast-container"
           class="grid grid-cols-1 sm:grid-cols-2 gap-3"
@@ -318,12 +288,11 @@
         </div>
       </section>
     </div>
-
-    <!-- Footer -->
-    <footer class="flex justify-center items-center text-sm mt-auto pt-3">
+    <footer
+      class="flex justify-center items-center text-sm pt-4 pb-4 shrink-0 bg-black"
+    >
       <p>Made by SyraxDev ❤️</p>
     </footer>
-
     <script src="script.js"></script>
   </body>
 </html>
