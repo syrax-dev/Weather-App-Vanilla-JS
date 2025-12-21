@@ -3,6 +3,7 @@ const API_KEY = "b6731de5873772c1eded405a0583456d"; // OpenWeatherMap API Key
 const cityInput = document.getElementById("city-input");
 const searchBtn = document.getElementById("searchBtn");
 const preSearchDiv = document.getElementById("pre-search");
+const weatherInfoSection = document.getElementById("weather-info");
 
 // Current weather display elements
 const cityName = document.getElementById("city-name").querySelector("h2");
@@ -64,6 +65,8 @@ function getDayName(timestamp) {
 /**
  * Fetches current weather and 4-day forecast for specified city
  * @param {string} city - Name of the city to get weather for
+ * @async
+ * @throws {Error} When API request fails or city is not found
  */
 async function getWeather(city) {
   try {
@@ -118,15 +121,20 @@ async function getWeather(city) {
 
 /**
  * Updates the UI with current weather data
+ *
  * @param {Object} data - Weather data object from API
+ * @param {Object} data.main - Temperature and pressure data
+ * @param {Array} data.weather - Weather conditions array
+ * @param {Object} data.sys - Sunrise/sunset data
+ * @param {Object} data.wind - Wind speed data
  */
 function updateWeatherUI(data) {
   // Hide the pre-search placeholder
   preSearchDiv.style.display = "none";
+  weatherInfoSection.classList.remove("hidden");
 
   // Update city name
   cityName.textContent = data.name;
-
   // Update temperature (rounded to nearest degree)
   tempInfo.textContent = `${Math.round(data.main.temp)}°C`;
 
@@ -137,7 +145,6 @@ function updateWeatherUI(data) {
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
     .join(" ");
   weatherCondition.textContent = capitalizedDescription;
-
   // Update date
   currentDate.textContent = formatDate(data.dt);
 
@@ -153,6 +160,7 @@ function updateWeatherUI(data) {
 /**
  * Updates the UI with 4-day forecast data
  * @param {Object} data - Forecast data object from API
+ * @param {Array} data.list - Array of forecast objects (3-hour intervals)
  */
 function updateForecastUI(data) {
   // Show forecast section
@@ -163,8 +171,9 @@ function updateForecastUI(data) {
 
   // Filter forecast data to get one entry per day (around noon)
   const dailyForecasts = [];
-  const seenDates = new Set();
+  const seenDates = new Set(); // O(1) lookup for date deduplication
 
+  // Filter logic: select midday forecasts (12-3 PM) for representative daily conditions
   data.list.forEach((item) => {
     const date = new Date(item.dt * 1000).toDateString();
     const hour = new Date(item.dt * 1000).getHours();
@@ -217,6 +226,7 @@ function updateForecastUI(data) {
     forecastContainer.appendChild(forecastCard);
   });
 }
+
 /**
  * Search button click event
  * Triggers weather search when button is clicked
